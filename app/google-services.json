@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "260170023423",
+    "firebase_url": "https://courier-service-application-default-rtdb.firebaseio.com",
+    "project_id": "courier-service-application",
+    "storage_bucket": "courier-service-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260170023423:android:1d478a0b3c46002c4f67ca",
+        "android_client_info": {
+          "package_name": "com.app.attendancemanagementapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "260170023423-018mgremvqc7tr8jknsmif1rlph82u0k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.attendancemanagementapp",
+            "certificate_hash": "dd9cc44cd0bdca79d00082c8d70dddbf83abebf2"
+          }
+        },
+        {
+          "client_id": "260170023423-jk1csvmjbcnh4jqsf1hublbiprqr4ht7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClko9S4vT3h3cbUrK9FIS0t_Dx6USm3-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "260170023423-f5n9onvpahsrg716cf021c4lmghom7ef.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

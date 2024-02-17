@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.AttendanceManagementApp" parent="Theme.Material3.DayNight.NoActionBar">
+         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
+    </style>
+
+    <style name="Theme.AttendanceManagementApp" parent="Base.Theme.AttendanceManagementApp" />
+</resources>

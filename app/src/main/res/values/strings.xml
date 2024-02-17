@@ -1,0 +1,116 @@
+<resources>
+    <string name="app_name">Attendance Management System</string>
+
+    //custom
+    <string name="account_type">Select your account type</string>
+    <string name="nav_drawer_open">open</string>
+    <string name="nav_drawer_close">close</string>
+
+    <string-array name="semester">
+        <item>Select Semester</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+
+    <string-array name="department">
+        <item>Select Department</item>
+        <item>CSE</item>
+        <item>ME</item>
+        <item>EE</item>
+        <item>CE</item>
+        <item>Basic Science</item>
+        <item>Humanities</item>
+    </string-array>
+
+    <string-array name="year">
+        <item>Select year</item>
+        <item>1st</item>
+        <item>2nd</item>
+        <item>3rd</item>
+        <item>4th</item>
+    </string-array>
+
+    <string-array name="course">
+        <item>Select Course</item>
+        <item>C</item>
+        <item>JAVA</item>
+        <item>DBMS</item>
+        <item>OS</item>
+        <item>COA</item>
+        <item>Data Structure</item>
+        <item>DAA</item>
+        <item>FLAT</item>
+        <item>IOT</item>
+        <item>Computer Graphics</item>
+        <item>Compiler Design</item>
+        <item>Data Communication</item>
+        <item>DLD</item>
+        <item>Software Engineering</item>
+    </string-array>
+
+    <string-array name="course_code">
+        <item>Select Course Code</item>
+        <item>RPL2B001</item>
+        <item>ROP3B001</item>
+        <item>RCS5C002</item>
+        <item>RCS5C003</item>
+        <item>RCS4C003</item>
+        <item>RCS3C002</item>
+        <item>RCS4C002</item>
+        <item>RCS5C001</item>
+        <item>RIT7D001</item>
+        <item>RCS5D006</item>
+        <item>RCS6C002</item>
+        <item>RCS4D001</item>
+        <item>RCS3C001</item>
+        <item>RCS6C001</item>
+    </string-array>
+
+    <string-array name="desig">
+        <item>Select Designation</item>
+        <item>Professor</item>
+        <item>Assistant Professor</item>
+        <item>Lecturer</item>
+    </string-array>
+
+    <string-array name="shift">
+        <item>Select shift</item>
+        <item>Morning</item>
+        <item>Afternoon</item>
+    </string-array>
+
+    <string-array name="batch">
+        <item>Select Batch</item>
+        <item>2010</item>
+        <item>2011</item>
+        <item>2012</item>
+        <item>2013</item>
+        <item>2014</item>
+        <item>2015</item>
+        <item>2016</item>
+        <item>2017</item>
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+    </string-array>
+
+    //intro
+    <string name="intro_details">Manage teacher and student information\n
+        course allocation System\n
+        take live Attendance
+    </string>
+    <string name="intro_contacts">Manege Teacher and Student information</string>
+    <string name="intro_blood_donation">Course Allocation System</string>
+    <string name="intro_find_location">Take live Attendance</string>
+
+</resources>

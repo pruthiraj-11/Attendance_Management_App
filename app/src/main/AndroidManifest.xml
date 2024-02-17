@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AttendanceManagementApp"
+        tools:targetApi="33">
+
+        <service
+            android:name=".service.ServiceCommunicator"
+            android:process=":exception"
+            android:enabled="true"
+            android:exported="false">
+        </service>
+
+        <receiver android:name=".service.ReadSendSMSService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".view.activity.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".view.activity.IntroActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.MainActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.ShowAttendanceActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.StudentActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.ViewAttendenceActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.SelectedCourse1Activity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.TakeAttendanceActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.DatePickerActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.SelectedCourseActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.AddCourseActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.CourseListActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.CourseDeptctivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.TeacherActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.DeptActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.SelectStudentActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.AddTeacherActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.TeacherListActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.AddStudentActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.StudentListActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.AdminActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.StudentLoginActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.TeacherLoginActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.AdminSignUpActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.activity.AdminLoginActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false"/>
+    </application>
+
+</manifest>
