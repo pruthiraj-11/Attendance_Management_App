@@ -18,8 +18,32 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/take_attendance_loader"
+            android:layout_centerInParent="true"
+            android:visibility="visible"
+            app:lottie_rawRes="@raw/loader_animation_lottie"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+
+        <TextView
+            android:id="@+id/noStudentMsgAttendance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="We didn't found any registered students to take attendance."
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="@color/colorBlack"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
        <androidx.recyclerview.widget.RecyclerView
            android:id="@+id/tARv"
+           android:visibility="invisible"
            android:layout_above="@+id/submitbtn"
            android:layout_width="match_parent"
            android:layout_height="match_parent"/>

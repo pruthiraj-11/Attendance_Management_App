@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -41,8 +42,9 @@ public class StudentListActivity extends AppCompatActivity {
 
         Toolbar studentListToolbar = findViewById(R.id.studentListToolbar);
         FloatingActionButton addStudentBtn = findViewById(R.id.addStudentBtn);
+        TextView noStudentIndi=findViewById(R.id.noStudentMsg);
         studentListRV=findViewById(R.id.StudentListRV);
-//        lottieAnimationView=findViewById(R.id.animation_view);
+        lottieAnimationView=findViewById(R.id.animation_view);
         Intent intent=getIntent();
         intentDept= intent.getStringExtra("DEPT");
         intentBatch=intent.getStringExtra("BATCH");
@@ -66,7 +68,14 @@ public class StudentListActivity extends AppCompatActivity {
                             Student student = dataSnapshot1.getValue(Student.class);
                             studentList.add(student);
                         }
+                    }
+                    if (!studentList.isEmpty()) {
+                        lottieAnimationView.setVisibility(View.GONE);
                         studentListAdapter.notifyDataSetChanged();
+                        studentListRV.setVisibility(View.VISIBLE);
+                    } else {
+                        lottieAnimationView.setVisibility(View.GONE);
+                        noStudentIndi.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -77,15 +86,12 @@ public class StudentListActivity extends AppCompatActivity {
             }
         });
 
-        addStudentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1=new Intent(StudentListActivity.this,AddStudentActivity.class);
-                intent1.putExtra("DEPT",intentDept);
-                intent1.putExtra("BATCH",intentBatch);
-                intent1.putExtra("SHIFT",intentShift);
-                startActivity(intent1);
-            }
+        addStudentBtn.setOnClickListener(v -> {
+            Intent intent1=new Intent(StudentListActivity.this,AddStudentActivity.class);
+            intent1.putExtra("DEPT",intentDept);
+            intent1.putExtra("BATCH",intentBatch);
+            intent1.putExtra("SHIFT",intentShift);
+            startActivity(intent1);
         });
     }
     @Override

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.app.attendancemanagementapp.R;
 import com.app.attendancemanagementapp.adapter.CourseListAdapter;
 import com.app.attendancemanagementapp.model.Course;
@@ -32,7 +34,7 @@ public class CourseListActivity extends AppCompatActivity {
    private List<Course>  courseList;
    private DatabaseReference courseRef;
    private CourseListAdapter courseListAdapter;
-
+   private LottieAnimationView lottieAnimationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,8 @@ public class CourseListActivity extends AppCompatActivity {
         final Intent intent=getIntent();
         intented_dept=intent.getStringExtra("CDEPT");
         intented_Shift=intent.getStringExtra("CSHIFT");
+        lottieAnimationView=findViewById(R.id.course_loader);
+        TextView noCourseMsg=findViewById(R.id.noCourseMsg);
         addCourseButton=findViewById(R.id.addCBtn);
         courseRv=findViewById(R.id.CourseListRV);
         courseList=new ArrayList<>();
@@ -65,7 +69,14 @@ public class CourseListActivity extends AppCompatActivity {
                             courseList.add(course);
                         }
                     }
-                    courseListAdapter.notifyDataSetChanged();
+                    if (!courseList.isEmpty()) {
+                        courseListAdapter.notifyDataSetChanged();
+                        lottieAnimationView.setVisibility(View.GONE);
+                        courseRv.setVisibility(View.VISIBLE);
+                    } else {
+                        lottieAnimationView.setVisibility(View.GONE);
+                        noCourseMsg.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 

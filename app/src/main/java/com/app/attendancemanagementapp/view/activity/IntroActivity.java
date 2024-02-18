@@ -120,7 +120,11 @@ public class IntroActivity extends AppCompatActivity {
 
     private void requestPermissions() {
         Dexter.withContext(this)
-                .withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,
+                .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_WIFI_STATE,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.RECEIVE_SMS,
                         Manifest.permission.SEND_SMS,
@@ -154,6 +158,7 @@ public class IntroActivity extends AppCompatActivity {
             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             Uri uri = Uri.fromParts("package", getPackageName(), null);
             intent.setData(uri);
+            startActivity(intent);
         });
         builder.setNegativeButton("Cancel", (dialog, which) -> {
             dialog.cancel();

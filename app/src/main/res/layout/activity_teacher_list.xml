@@ -19,10 +19,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/noTeacherMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="We didn't found any registered Teacher. \n \t\t\t\tTap + to add a new Student."
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="@color/colorBlack"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/animation_view"
+            android:layout_centerInParent="true"
+            android:visibility="visible"
+            app:lottie_rawRes="@raw/loader_animation_lottie"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/teacherListRV"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="invisible"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addTeacherBtn"

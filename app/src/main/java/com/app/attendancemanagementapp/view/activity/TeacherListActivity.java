@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.app.attendancemanagementapp.R;
 import com.app.attendancemanagementapp.adapter.TeacherListAdapter;
 import com.app.attendancemanagementapp.model.Teacher;
@@ -29,6 +31,7 @@ public class TeacherListActivity extends AppCompatActivity {
     private RecyclerView teacherListRv;
     private String intentedDept,intentedShift;
     private final List<Teacher> teacherlist=new ArrayList<>();
+    private LottieAnimationView loader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,8 @@ public class TeacherListActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        loader=findViewById(R.id.animation_view);
+        TextView noTeacherMsg=findViewById(R.id.noTeacherMsg);
         teacherListRv=findViewById(R.id.teacherListRV);
         final Intent intent=getIntent();
         intentedDept=intent.getStringExtra("TDEPT");
@@ -56,10 +61,17 @@ public class TeacherListActivity extends AppCompatActivity {
                             teacherlist.add(teacher);
                         }
                     }
-                    TeacherListAdapter teacherListAdapter=new TeacherListAdapter(TeacherListActivity.this,teacherlist);
-                    teacherListRv.setLayoutManager(new LinearLayoutManager(TeacherListActivity.this));
-                    teacherListAdapter.notifyDataSetChanged();
-                    teacherListRv.setAdapter(teacherListAdapter);
+                    if (!teacherlist.isEmpty()) {
+                        TeacherListAdapter teacherListAdapter=new TeacherListAdapter(TeacherListActivity.this,teacherlist);
+                        teacherListRv.setLayoutManager(new LinearLayoutManager(TeacherListActivity.this));
+                        teacherListAdapter.notifyDataSetChanged();
+                        teacherListRv.setAdapter(teacherListAdapter);
+                        loader.setVisibility(View.GONE);
+                        teacherListRv.setVisibility(View.VISIBLE);
+                    } else {
+                        loader.setVisibility(View.GONE);
+                        noTeacherMsg.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
