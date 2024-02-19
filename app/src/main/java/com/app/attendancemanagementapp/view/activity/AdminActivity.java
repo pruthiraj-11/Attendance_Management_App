@@ -2,8 +2,10 @@ package com.app.attendancemanagementapp.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,19 +20,27 @@ import com.google.android.material.navigation.NavigationView;
 
 
 public class AdminActivity extends AppCompatActivity {
-    private NavigationView admin_nav_view;
-    private DrawerLayout admin_nav_drawer;
-    private Toolbar admin_toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        admin_toolbar=findViewById(R.id.admin_toolbar_id);
+        Toolbar admin_toolbar = findViewById(R.id.admin_toolbar_id);
         setSupportActionBar(admin_toolbar);
 
-        admin_nav_drawer=findViewById(R.id.admin_nav_drawer_id);
-        admin_nav_view=findViewById(R.id.admin_nav_view_id);
+        DrawerLayout admin_nav_drawer = findViewById(R.id.admin_nav_drawer_id);
+        NavigationView admin_nav_view = findViewById(R.id.admin_nav_view_id);
+
+        Intent intent=getIntent();
+        String username=intent.getStringExtra("name");
+        String usermail=intent.getStringExtra("email");
+
+        View headerView = admin_nav_view.getHeaderView(0);
+        TextView userName= (TextView) headerView.findViewById(R.id.headerName);
+        TextView userEmail= (TextView) headerView.findViewById(R.id.emailText_id);
+        userName.setText(username);
+        userEmail.setText(usermail);
 
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, admin_nav_drawer, admin_toolbar,R.string.nav_drawer_open, R.string.nav_drawer_close);
         actionBarDrawerToggle.getDrawerArrowDrawable().setColor(getColor(R.color.colorWhite));

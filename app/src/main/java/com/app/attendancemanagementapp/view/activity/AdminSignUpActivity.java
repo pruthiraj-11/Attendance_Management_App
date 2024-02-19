@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.app.attendancemanagementapp.databinding.ActivityAdminSignUpBinding;
 import com.app.attendancemanagementapp.model.Admin;
+import com.app.attendancemanagementapp.storage.SaveUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -73,58 +74,47 @@ public class AdminSignUpActivity extends AppCompatActivity {
             binding.adminSignUPConfirmPassET.setError("Password does not match");
             binding.adminSignUPConfirmPassET.requestFocus();
         }else {
-          mAuth.createUserWithEmailAndPassword(email,password)
-                  .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                      @Override
-                      public void onComplete(@NonNull Task<AuthResult> task) {
-                          if(task.isSuccessful()){
-                             uId= Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-                             adminRef= FirebaseDatabase.getInstance().getReference().child("Admin").child("AdminCredentials");
-                              Admin admin=new Admin(
-                                      name,
-                                      email,
-                                      "",
-                                      "",
-                                      "",
-                                      uId,
-                                      "",
-                                      "",
-                                      "",
-                                      "",
-                                      0,
-                                      "",
-                                      "",
-                                      0,
-                                      "",
-                                      password);
-                              adminRef.setValue(admin).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                          @Override
-                                          public void onComplete(@NonNull Task<Void> task) {
-                                              if(task.isSuccessful()){
-                                                  mAuth.signOut();
-                                                  Intent intent=new Intent(AdminSignUpActivity.this,AdminLoginActivity.class);
-                                                  startActivity(intent);
-                                                  finish();
-                                                  Toast.makeText(getApplicationContext(),"Sign up successfully",Toast.LENGTH_SHORT).show();
-                                              } else {
-                                               mAuth.signOut();
-                                              }
-                                          }
-                                      }).addOnFailureListener(new OnFailureListener() {
-                                  @Override
-                                  public void onFailure(@NonNull Exception e) {
-                                      Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
-                                  }
-                              });
-                          }else {
-                              binding.addSignUpLL.setVisibility(View.VISIBLE);
-                              binding.adminSignUPPB.setVisibility(View.GONE);
-                              Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(),Toast.LENGTH_SHORT).show();
-                          }
-                      }
-                  });
-          binding.addSignUpLL.setVisibility(View.GONE);
-          binding.adminSignUPPB.setVisibility(View.VISIBLE);
+            binding.adminSignUPPB.setVisibility(View.VISIBLE);
+            adminRef= FirebaseDatabase.getInstance().getReference().child("Admin").child("AdminCredentials");
+            Admin admin=new Admin(
+                    name,
+                    email,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    0,
+                    "",
+                    "",
+                    0,
+                    "",
+                    password);
+            adminRef.setValue(admin).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        binding.adminSignUPPB.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(),"New Admin Added successfully",Toast.LENGTH_SHORT).show();
+                        SaveUser saveUser=new SaveUser();
+                        saveUser.admin_saveData(AdminSignUpActivity.this,false);
+                        Intent intent=new Intent(AdminSignUpActivity.this,AdminLoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        binding.adminSignUPPB.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(),"Try again later.",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }

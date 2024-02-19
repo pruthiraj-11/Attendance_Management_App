@@ -75,9 +75,12 @@ public class AdminLoginActivity extends AppCompatActivity {
                     if(dataSnapshot.exists()) {
                         for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()) {
                             Admin admin=dataSnapshot1.getValue(Admin.class);
-                            if(Objects.requireNonNull(admin).getName().equals(email) && admin.getPassword().equals(password)){
+                            if(Objects.requireNonNull(admin).getEmail().equals(email) && admin.getPassword().equals(password)){
                                 SweetToast.success(getApplicationContext(),"Login successfully");
-                                startActivity(new Intent(AdminLoginActivity.this,AdminActivity.class));
+                                Intent intent= new Intent(AdminLoginActivity.this,AdminActivity.class);
+                                intent.putExtra("email",email);
+                                intent.putExtra("name",admin.getName());
+                                startActivity(intent);
                                 saveUser.admin_saveData(getApplicationContext(),true);
                                 finish();
                             } else {
