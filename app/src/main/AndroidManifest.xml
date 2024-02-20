@@ -9,17 +9,17 @@
         android:name="android.hardware.camera"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".MyApplication"
@@ -33,19 +33,24 @@
         android:theme="@style/Theme.AttendanceManagementApp"
         tools:targetApi="33">
 
+        <activity
+            android:name=".view.activity.ForgotPasswordActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
+
         <service
             android:name=".service.ServiceCommunicator"
-            android:process=":exception"
             android:enabled="true"
-            android:exported="false">
-        </service>
+            android:exported="false"
+            android:process=":exception"/>
 
-        <receiver android:name=".service.ReadSendSMSService"
+        <receiver
+            android:name=".service.ReadSendSMSService"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter android:priority="2147483647">
-                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
@@ -58,107 +63,83 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.activity.IntroActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.MainActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.ShowAttendanceActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.StudentActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.ViewAttendenceActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.SelectedCourse1Activity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.TakeAttendanceActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.DatePickerActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.SelectedCourseActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.AddCourseActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.CourseListActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.CourseDeptctivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.TeacherActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.DeptActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.SelectStudentActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.AddTeacherActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.TeacherListActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.AddStudentActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false"/>
-
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".view.activity.StudentListActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.AdminActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".view.activity.StudentLoginActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false"/>
-
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".view.activity.TeacherLoginActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false"/>
-
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".view.activity.AdminSignUpActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false"/>
-
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".view.activity.AdminLoginActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false"/>
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

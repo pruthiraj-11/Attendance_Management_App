@@ -14,15 +14,15 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="1dp"
         android:orientation="vertical"
-        android:paddingLeft="15dp"
+        android:paddingStart="15dp"
         android:paddingBottom="15dp">
 
-        <ImageView
-            app:srcCompat="@drawable/ic_logo"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/adminProfile"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_marginBottom="3dp"
-            tools:ignore="VectorDrawableCompat" />
+            android:src="@drawable/placeholder_profile"
+            android:layout_marginBottom="3dp" />
 
         <TextView
             android:layout_marginTop="10dp"

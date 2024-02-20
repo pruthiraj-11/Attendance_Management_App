@@ -80,6 +80,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                                 Intent intent= new Intent(AdminLoginActivity.this,AdminActivity.class);
                                 intent.putExtra("email",email);
                                 intent.putExtra("name",admin.getName());
+                                intent.putExtra("profile_image",admin.getProfile_image());
                                 startActivity(intent);
                                 saveUser.admin_saveData(getApplicationContext(),true);
                                 finish();

@@ -47,6 +47,7 @@ dependencies {
     implementation("com.airbnb.android:lottie:6.3.0")
     implementation("com.karumi:dexter:6.2.3")
     implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.google.firebase:firebase-auth:22.3.1")
     implementation("com.google.android.gms:play-services-auth:21.0.0")
