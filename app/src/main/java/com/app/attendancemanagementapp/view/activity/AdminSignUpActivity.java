@@ -40,8 +40,7 @@ import java.util.Objects;
 import xyz.hasnat.sweettoast.SweetToast;
 
 public class AdminSignUpActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
-    private String uId;
+
     private DatabaseReference adminRef;
     private FirebaseStorage firebaseStorage;
     private BottomSheetDialog bottomSheetDialog;
@@ -55,7 +54,6 @@ public class AdminSignUpActivity extends AppCompatActivity {
         binding=ActivityAdminSignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        mAuth=FirebaseAuth.getInstance();
         firebaseStorage=FirebaseStorage.getInstance();
 
         activityResultLauncher=registerForActivityResult(new ActivityResultContracts.GetContent(), o -> {
@@ -160,7 +158,7 @@ public class AdminSignUpActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
                         binding.adminSignUPPB.setVisibility(View.GONE);
-                        SweetToast.success(getApplicationContext(),"New Admin Added successfully",Toast.LENGTH_SHORT);
+                        SweetToast.success(getApplicationContext(),"New Admin Added successfully");
                         SaveUser saveUser=new SaveUser();
                         saveUser.admin_saveData(AdminSignUpActivity.this,false);
                         Intent intent=new Intent(AdminSignUpActivity.this,AdminLoginActivity.class);
@@ -168,7 +166,7 @@ public class AdminSignUpActivity extends AppCompatActivity {
                         finish();
                     } else {
                         binding.adminSignUPPB.setVisibility(View.GONE);
-                        SweetToast.error(getApplicationContext(),"Try again later.",Toast.LENGTH_SHORT);
+                        SweetToast.error(getApplicationContext(),"Try again later.");
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {

@@ -1,6 +1,7 @@
 package com.app.attendancemanagementapp.view.activity;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -38,11 +39,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
-//        setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false);
-//        getWindow().setStatusBarColor(Color.TRANSPARENT);
-
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         FirebaseDatabase.getInstance().getReference().child("app status").child(sdf.format(new Date())).setValue("app online");
 
@@ -53,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_SMS}, 74);
         } else {
+            SettingUpPeriodicWork();
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
@@ -111,6 +108,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void SettingUpPeriodicWork(){
+
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -120,17 +121,6 @@ public class MainActivity extends AppCompatActivity {
                 readSms();
             }
         }
-    }
-
-    public static void setWindowFlag(Activity activity, final int bits, boolean on) {
-        Window win = activity.getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
     }
 
     @Override
