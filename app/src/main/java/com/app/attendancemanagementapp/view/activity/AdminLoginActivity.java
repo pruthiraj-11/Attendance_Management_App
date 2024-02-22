@@ -119,26 +119,6 @@ public class AdminLoginActivity extends AppCompatActivity {
 
                 }
             });
-
-           /* auth.signInWithEmailAndPassword(email,password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
-                                Toast.makeText(getApplicationContext(),"Login successfully",Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(AdminLoginActivity.this,AdminActivity.class));
-                                saveUser.admin_saveData(getApplicationContext(),true);
-                                finish();
-                            }else {
-                                Toast.makeText(getApplicationContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
-                }
-            });*/
         }
     }
 
