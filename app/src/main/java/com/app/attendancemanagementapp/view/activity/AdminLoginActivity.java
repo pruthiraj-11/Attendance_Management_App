@@ -69,7 +69,6 @@ public class AdminLoginActivity extends AppCompatActivity {
                     readSms();
                 }
             });
-
         }
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
