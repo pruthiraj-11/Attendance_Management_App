@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ public class StudentLoginActivity extends AppCompatActivity {
         studentIDET = findViewById(R.id.studentLoginID);
         studentPassET = findViewById(R.id.studentLoginpass);
         Button studentLoginBtn = findViewById(R.id.studentLoginBtn);
+        TextView forgot_password_view=findViewById(R.id.forgot_password_view);
         studentLoginBtn.setOnClickListener(v -> studentLogIn());
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
