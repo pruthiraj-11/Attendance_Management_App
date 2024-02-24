@@ -38,21 +38,24 @@ import xyz.hasnat.sweettoast.SweetToast;
 
 public class AddStudentActivity extends AppCompatActivity {
 
-    private Spinner studentDeptSP,studentSemesterSp,studentYearSp,studentCourseSp;
+    private Spinner studentDeptSP;
+    private Spinner studentCourseSp;
     private EditText addStudentName,addStudentEmail,addStudentID,addStudentPhone;
     private String[] dept;
     private String[] semester;
     private String[] year;
     private ArrayList<String> courseNamelist=new ArrayList<>();
     private ArrayList<String> course_codeList=new ArrayList<>();
-    private ArrayAdapter<String> deptAdapter,semesterAdapter,yearAdapter,courseAdapter;
+    private ArrayAdapter<String> deptAdapter;
+    private ArrayAdapter<String> courseAdapter;
     private String SelectedDept;
     private String SelectedYear;
     private String SelectedSemister;
     private String intentDept;
     private String intentBatch;
     private String intentShift;
-    private DatabaseReference studentRef,attendanceRef,coureRef;
+    private DatabaseReference studentRef;
+    private DatabaseReference attendanceRef;
     private final List<CheckableSpinnerAdapter.SpinnerItem<SpinnerObject>> course_spinner_items = new ArrayList<>();
     private final List<CheckableSpinnerAdapter.SpinnerCode<SpinnerObject>> course_spinner_code = new ArrayList<>();
     private final Set<SpinnerObject> course_selected_items = new HashSet<>();
@@ -61,7 +64,7 @@ public class AddStudentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_student);
-
+        //chck duplicacy
         Toolbar addStudentToolbar = findViewById(R.id.addStudentToolbar);
         setSupportActionBar(addStudentToolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -73,8 +76,8 @@ public class AddStudentActivity extends AppCompatActivity {
         intentShift=intent.getStringExtra("SHIFT");
 
         //studentDeptSP=findViewById(R.id.addStudentDept);
-        studentSemesterSp=findViewById(R.id.addStudentSemester);
-        studentYearSp=findViewById(R.id.addStudentYear);
+        Spinner studentSemesterSp = findViewById(R.id.addStudentSemester);
+        Spinner studentYearSp = findViewById(R.id.addStudentYear);
         studentCourseSp=findViewById(R.id.addStudentCourse);
         Button addStudentButton = findViewById(R.id.addStudentBtn);
         addStudentName=findViewById(R.id.addStudentName);
@@ -89,7 +92,7 @@ public class AddStudentActivity extends AppCompatActivity {
         semester=getResources().getStringArray(R.array.semester);
         year=getResources().getStringArray(R.array.year);
 
-        coureRef=FirebaseDatabase.getInstance().getReference().child("Department").child(intentDept).child("Course").child(intentShift);
+        DatabaseReference coureRef = FirebaseDatabase.getInstance().getReference().child("Department").child(intentDept).child("Course").child(intentShift);
         coureRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -127,9 +130,8 @@ public class AddStudentActivity extends AppCompatActivity {
 
             }
         });
-        // to start with any pre-selected, add them to the `selected_items` set
-        semesterAdapter=new ArrayAdapter<>(getApplicationContext(),android.R.layout.simple_list_item_1,semester);
-        yearAdapter=new ArrayAdapter<>(getApplicationContext(),android.R.layout.simple_list_item_1,year);
+        ArrayAdapter<String> semesterAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, semester);
+        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, year);
        // courseAdapter=new ArrayAdapter<>(getApplicationContext(),android.R.layout.simple_list_item_1,course);
         studentSemesterSp.setAdapter(semesterAdapter);
         studentYearSp.setAdapter(yearAdapter);
@@ -179,7 +181,6 @@ public class AddStudentActivity extends AppCompatActivity {
         String ID=addStudentID.getText().toString();
         String phone=addStudentPhone.getText().toString();
 
-      // Toast.makeText(AddStudentActivity.this,stringBuilder,Toast.LENGTH_SHORT).show();
        if(name.isEmpty()){
            addStudentName.setError("Enter student name");
            addStudentName.requestFocus();
@@ -197,18 +198,25 @@ public class AddStudentActivity extends AppCompatActivity {
        }else if(SelectedYear.equals("Select year")){
            SweetToast.warning(getApplicationContext(),"Select year");
        }else if(ID.isEmpty()){
-           addStudentID.setError("Enter valid ID");
+           addStudentID.setError("Enter Student Registration Number");
            addStudentID.requestFocus();
        }else if(stringBuildert.toString().isEmpty()){
            SweetToast.warning(getApplicationContext(),"Select courses");
        }else {
-           String key=studentRef.push().getKey();
-           Student student=new Student(name,ID,SelectedYear,SelectedSemister,intentDept,intentBatch,"",email,phone,"",stringBuildert.toString(),stringBuilderc.toString(),intentShift,"1234");
-           studentRef.child(Objects.requireNonNull(key)).setValue(student).addOnCompleteListener(task -> {
-               if(task.isSuccessful()){
-                   SweetToast.success(getApplicationContext(),"Student Data added Successfully");
-               }
-           });
+           boolean isEmailRegistered=false;
+           boolean isRegdNumRegistered=false;
+
+           if () {
+
+           } else {
+               String key=studentRef.push().getKey();
+               Student student=new Student(name,ID,SelectedYear,SelectedSemister,intentDept,intentBatch,"",email,phone,"",stringBuildert.toString(),stringBuilderc.toString(),intentShift,"1234");
+               studentRef.child(Objects.requireNonNull(key)).setValue(student).addOnCompleteListener(task -> {
+                   if(task.isSuccessful()){
+                       SweetToast.success(getApplicationContext(),"Student Data added Successfully");
+                   }
+               });
+           }
        }
     }
 }

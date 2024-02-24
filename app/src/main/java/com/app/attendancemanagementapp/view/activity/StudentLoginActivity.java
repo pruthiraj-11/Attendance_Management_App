@@ -2,6 +2,7 @@ package com.app.attendancemanagementapp.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,9 +10,11 @@ import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.app.attendancemanagementapp.R;
+import com.app.attendancemanagementapp.adapter.TakeAttendanceRVAdapter;
 import com.app.attendancemanagementapp.model.Student;
 import com.app.attendancemanagementapp.storage.SaveUser;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +45,34 @@ public class StudentLoginActivity extends AppCompatActivity {
         TextView forgot_password_view=findViewById(R.id.forgot_password_view);
         studentLoginBtn.setOnClickListener(v -> studentLogIn());
 
+        Button cancelBtn, confirmBtn;
+        EditText studentmail;
+        final AlertDialog dialog = new AlertDialog.Builder(StudentLoginActivity.this).create();
+        View view = LayoutInflater.from(StudentLoginActivity.this).inflate(R.layout.student_password_forgot_layout, null);
+        cancelBtn = view.findViewById(R.id.cancelBtn);
+        confirmBtn = view.findViewById(R.id.confirmBtn);
+        studentmail = view.findViewById(R.id.studentmail);
+        dialog.setCancelable(false);
+        dialog.setView(view);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String studentMail=studentmail.getText().toString().trim();
+
+            }
+        });
+        forgot_password_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+        });
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {

@@ -138,7 +138,7 @@ public class TakeAttendanceActivity extends AppCompatActivity {
                 total.setText(Integer.toString(studentList.size()));
                 present.setText(Integer.toString(TakeAttendanceRVAdapter.presentList.size()));
                 absent.setText(Integer.toString(TakeAttendanceRVAdapter.absentList.size()));
-                dialog.setCancelable(true);
+                dialog.setCancelable(false);
 
                 dialog.setView(view);
 
