@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.app.attendancemanagementapp.R;
 import com.app.attendancemanagementapp.adapter.TakeAttendanceRVAdapter;
 import com.app.attendancemanagementapp.model.Student;
+import com.app.attendancemanagementapp.model.StudentCredential;
 import com.app.attendancemanagementapp.storage.SaveUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -63,8 +64,38 @@ public class StudentLoginActivity extends AppCompatActivity {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String studentMail=studentmail.getText().toString().trim();
+                final boolean[] found = {false};
+                final String[] studentMail = {studentmail.getText().toString().trim()};
+                DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference().child("AllStudentCredentials");
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                                StudentCredential studentCredential1=dataSnapshot.getValue(StudentCredential.class);
+                                if (Objects.equals(Objects.requireNonNull(studentCredential1).getStudentEmail(), studentMail[0])) {
+                                    String password=studentCredential1.getStudentPassword();
+                                    TextView foundPassword=view.findViewById(R.id.foundPassword);
+                                    foundPassword.setVisibility(View.VISIBLE);
+                                    foundPassword.setText(foundPassword.getText().toString()+":"+password);
+                                    studentmail.setText("");
+                                    found[0] =true;
+                                }
+                            }
+                            if (!found[0]) {
+                                studentmail.setError("Invalid email.");
+                            }
+                        } else {
+                            dialog.dismiss();
+                            SweetToast.error(getApplicationContext(),"No Student found.");
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         });
         forgot_password_view.setOnClickListener(new View.OnClickListener() {

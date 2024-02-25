@@ -28,7 +28,7 @@ import xyz.hasnat.sweettoast.SweetToast;
 
 public class AddTeacherActivity extends AppCompatActivity {
     private Toolbar addTeacherToolbar;
-    private EditText teacherNameEt,teacherEmailEt,teacherPhoneEt,teacherAddressEt,teacherIdEt;
+    private EditText teacherNameEt,teacherEmailEt,teacherPhoneEt,teacherAddressEt,teacherIdEt,addTeacherPassword;
     private Spinner teacherDesignationSp;
     private String[] desigList;
     private String selectedDesig;
@@ -54,6 +54,7 @@ public class AddTeacherActivity extends AppCompatActivity {
         teacherAddressEt=findViewById(R.id.addTeacherAddress);
         teacherPhoneEt=findViewById(R.id.addTeacherPhone);
         teacherIdEt=findViewById(R.id.addTeacherId);
+        addTeacherPassword=findViewById(R.id.addTeacherPassword);
         addTeacherBtn=findViewById(R.id.addTbtn);
         teacherDesignationSp=findViewById(R.id.teacherDesignationSp);
 
@@ -85,18 +86,22 @@ public class AddTeacherActivity extends AppCompatActivity {
         String email=teacherEmailEt.getText().toString();
         String address=teacherAddressEt.getText().toString();
         String phone=teacherPhoneEt.getText().toString();
+        String password=addTeacherPassword.getText().toString().trim();
         String ID=teacherIdEt.getText().toString();
 
         if(name.isEmpty()){
             teacherNameEt.setError("Enter teacher name");
             teacherNameEt.requestFocus();
-        }else  if(email.isEmpty()){
+        }else if(email.isEmpty()){
             teacherEmailEt.setError("Enter Email");
             teacherEmailEt.requestFocus();
         }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             teacherEmailEt.setError("Enter Email");
             teacherEmailEt.requestFocus();
-        }else if(address.isEmpty()){
+        } else if (password.isEmpty()) {
+            addTeacherPassword.setError("Enter Password");
+            addTeacherPassword.requestFocus();
+        } else if(address.isEmpty()){
             teacherAddressEt.setError("Enter address");
             teacherAddressEt.requestFocus();
         }else if(phone.isEmpty()){
@@ -110,7 +115,7 @@ public class AddTeacherActivity extends AppCompatActivity {
         }else {
             teacherRef= FirebaseDatabase.getInstance().getReference().child("Department").child(intendedDept).child("Teacher").child(intentedShift);
             String key=teacherRef.push().getKey();
-            Teacher teacher=new Teacher(ID,name,intendedDept,selectedDesig,"",phone,email,"","",address,"","1234",intentedShift);
+            Teacher teacher=new Teacher(ID,name,intendedDept,selectedDesig,"",phone,email,"","",address,"",password,intentedShift);
             teacherRef.child(Objects.requireNonNull(key)).setValue(teacher).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {

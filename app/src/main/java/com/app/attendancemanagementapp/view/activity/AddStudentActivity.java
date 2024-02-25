@@ -20,6 +20,7 @@ import com.app.attendancemanagementapp.adapter.CheckableSpinnerAdapter;
 import com.app.attendancemanagementapp.model.Course;
 import com.app.attendancemanagementapp.model.SpinnerObject;
 import com.app.attendancemanagementapp.model.Student;
+import com.app.attendancemanagementapp.model.StudentCredential;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -40,7 +41,7 @@ public class AddStudentActivity extends AppCompatActivity {
 
     private Spinner studentDeptSP;
     private Spinner studentCourseSp;
-    private EditText addStudentName,addStudentEmail,addStudentID,addStudentPhone;
+    private EditText addStudentName,addStudentEmail,addStudentID,addStudentPhone,addStudentPassword;
     private String[] dept;
     private String[] semester;
     private String[] year;
@@ -84,6 +85,7 @@ public class AddStudentActivity extends AppCompatActivity {
         addStudentEmail=findViewById(R.id.addStudentEmail);
         addStudentID=findViewById(R.id.addStudentID);
         addStudentPhone=findViewById(R.id.addStudentPhone);
+        addStudentPassword=findViewById(R.id.addStudentPassword);
 
         studentRef= FirebaseDatabase.getInstance().getReference().child("Department").child(intentDept).child("Student").child(intentBatch).child("allstudent").child(intentShift);
         //attendanceRef=FirebaseDatabase.getInstance().getReference().child("Department").child(intentDept).child("Student").child(intentBatch).child("attendance");
@@ -176,10 +178,11 @@ public class AddStudentActivity extends AppCompatActivity {
         for(SpinnerObject so:selected_course){
             stringBuilderc.append(so.getC_code().concat(","));
         }
-        String name=addStudentName.getText().toString();
-        String email=addStudentEmail.getText().toString();
-        String ID=addStudentID.getText().toString();
-        String phone=addStudentPhone.getText().toString();
+        String name=addStudentName.getText().toString().trim();
+        String email=addStudentEmail.getText().toString().trim();
+        String ID=addStudentID.getText().toString().trim();
+        String phone=addStudentPhone.getText().toString().trim();
+        String password=addStudentPassword.getText().toString().trim();
 
        if(name.isEmpty()){
            addStudentName.setError("Enter student name");
@@ -193,7 +196,10 @@ public class AddStudentActivity extends AppCompatActivity {
        } else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
            addStudentEmail.setError("Enter valid email");
            addStudentEmail.requestFocus();
-       }else if(SelectedSemister.equals("Select semester")){
+       } else if (password.isEmpty()) {
+           addStudentPassword.setError("Enter Password");
+           addStudentPassword.requestFocus();
+       } else if(SelectedSemister.equals("Select semester")){
            SweetToast.warning(getApplicationContext(),"Select semester");
        }else if(SelectedYear.equals("Select year")){
            SweetToast.warning(getApplicationContext(),"Select year");
@@ -203,20 +209,47 @@ public class AddStudentActivity extends AppCompatActivity {
        }else if(stringBuildert.toString().isEmpty()){
            SweetToast.warning(getApplicationContext(),"Select courses");
        }else {
-           boolean isEmailRegistered=false;
-           boolean isRegdNumRegistered=false;
-
-           if () {
-
-           } else {
-               String key=studentRef.push().getKey();
-               Student student=new Student(name,ID,SelectedYear,SelectedSemister,intentDept,intentBatch,"",email,phone,"",stringBuildert.toString(),stringBuilderc.toString(),intentShift,"1234");
-               studentRef.child(Objects.requireNonNull(key)).setValue(student).addOnCompleteListener(task -> {
-                   if(task.isSuccessful()){
-                       SweetToast.success(getApplicationContext(),"Student Data added Successfully");
+           DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference().child("AllStudentCredentials");
+           final boolean[] isEmailRegistered = {false};
+           final boolean[] isRegdNumRegistered = {false};
+           databaseReference.addValueEventListener(new ValueEventListener() {
+               @Override
+               public void onDataChange(@NonNull DataSnapshot snapshot) {
+                   if (snapshot.exists()) {
+                       for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                           StudentCredential studentCredential=dataSnapshot.getValue(StudentCredential.class);
+                           if (Objects.requireNonNull(studentCredential).getStudentEmail().equals(email)) {
+                               isEmailRegistered[0] =true;
+                           }
+                           if (studentCredential.getStudentRegdNum().equals(ID)) {
+                               isRegdNumRegistered[0] =true;
+                           }
+                       }
+                       if (isEmailRegistered[0] && isRegdNumRegistered[0]) {
+                           SweetToast.error(getApplicationContext(),"Student already registered.");
+                       } else if (isEmailRegistered[0]) {
+                           SweetToast.error(getApplicationContext(),"Email already registered.");
+                       } else if (isRegdNumRegistered[0]) {
+                           SweetToast.error(getApplicationContext(),"Registration number already registered.");
+                       } else {
+                           String key=studentRef.push().getKey();
+                           Student student=new Student(name,ID,SelectedYear,SelectedSemister,intentDept,intentBatch,"",email,phone,"",stringBuildert.toString(),stringBuilderc.toString(),intentShift,password);
+                           studentRef.child(Objects.requireNonNull(key)).setValue(student).addOnCompleteListener(task -> {
+                               if(task.isSuccessful()){
+                                   StudentCredential studentCredential=new StudentCredential(email,password,ID);
+                                   FirebaseDatabase.getInstance().getReference().child("AllStudentCredentials").child(ID).setValue(studentCredential);
+                                   SweetToast.success(getApplicationContext(),"Student Data added Successfully");
+                               }
+                           });
+                       }
                    }
-               });
-           }
+               }
+
+               @Override
+               public void onCancelled(@NonNull DatabaseError error) {
+
+               }
+           });
        }
     }
 }

@@ -116,8 +116,7 @@
             android:exported="false" />
         <activity
             android:name=".view.activity.AddStudentActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
+            android:exported="false" />
         <activity
             android:name=".view.activity.StudentListActivity"
             android:exported="false" />
