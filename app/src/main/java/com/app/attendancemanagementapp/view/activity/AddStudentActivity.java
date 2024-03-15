@@ -21,8 +21,6 @@ import com.app.attendancemanagementapp.model.Course;
 import com.app.attendancemanagementapp.model.SpinnerObject;
 import com.app.attendancemanagementapp.model.Student;
 import com.app.attendancemanagementapp.model.StudentCredential;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -233,7 +231,7 @@ public class AddStudentActivity extends AppCompatActivity {
                            SweetToast.error(getApplicationContext(),"Registration number already registered.");
                        } else {
                            String key=studentRef.push().getKey();
-                           Student student=new Student(name,ID,SelectedYear,SelectedSemister,intentDept,intentBatch,"",email,phone,"",stringBuildert.toString(),stringBuilderc.toString(),intentShift,password);
+                           Student student=new Student(name,ID,SelectedYear,SelectedSemister,intentDept,intentBatch,"",email,phone,"",stringBuildert.toString(),stringBuilderc.toString(),intentShift,password, key);
                            studentRef.child(Objects.requireNonNull(key)).setValue(student).addOnCompleteListener(task -> {
                                if(task.isSuccessful()){
                                    StudentCredential studentCredential=new StudentCredential(email,password,ID);

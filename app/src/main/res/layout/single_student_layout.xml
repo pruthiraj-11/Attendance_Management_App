@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:padding="3dp"
+    android:id="@+id/root_layout_student"
     android:layout_height="wrap_content">
     <LinearLayout
         android:padding="3dp"

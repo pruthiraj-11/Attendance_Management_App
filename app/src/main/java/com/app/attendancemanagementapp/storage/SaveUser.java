@@ -179,8 +179,7 @@ public class SaveUser {
                 sharedPreferences.getString("course",null),
                 sharedPreferences.getString("course_code",null),
                 sharedPreferences.getString("shift",null),
-                sharedPreferences.getString("password",null)
-        );
+                sharedPreferences.getString("password",null));
         return student;
     }
 }

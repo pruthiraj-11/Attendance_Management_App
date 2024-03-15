@@ -11,11 +11,20 @@ public class Student {
   private   String email;
   private   String phone;
   private   String gender;
-  private   String course;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    private   String course;
   private   String course_code;
   private   String shift;
   private   String password;
-
+  private   String key;
 
     public String getName() {
         return name;
@@ -132,6 +141,23 @@ public class Student {
         this.password = password;
     }
 
+    public Student(String name, String id, String year, String semester, String department, String batch, String section, String email, String phone, String gender, String course, String course_code, String shift, String password, String key) {
+        this.name = name;
+        this.id = id;
+        this.year = year;
+        this.semester = semester;
+        this.department = department;
+        this.batch = batch;
+        this.section = section;
+        this.email = email;
+        this.phone = phone;
+        this.gender = gender;
+        this.course = course;
+        this.course_code = course_code;
+        this.shift=shift;
+        this.password=password;
+        this.key = key;
+    }
     public Student(String name, String id, String year, String semester, String department, String batch, String section, String email, String phone, String gender, String course, String course_code, String shift, String password) {
         this.name = name;
         this.id = id;

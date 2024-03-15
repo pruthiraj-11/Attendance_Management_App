@@ -16,6 +16,8 @@ import com.app.attendancemanagementapp.R;
 import com.app.attendancemanagementapp.adapter.StudentListAdapter;
 import com.app.attendancemanagementapp.model.Student;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,6 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import xyz.hasnat.sweettoast.SweetToast;
 
 public class StudentListActivity extends AppCompatActivity {
     private final List<Student> studentList=new ArrayList<>();
@@ -100,5 +104,17 @@ public class StudentListActivity extends AppCompatActivity {
             this.finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if (Objects.equals(item.getTitle(), "Delete")) {
+            new MaterialAlertDialogBuilder(StudentListActivity.this)
+                    .setMessage("Are you sure to remove this student?")
+                    .setPositiveButton("Yes", (dialogInterface, i) -> {
+                        studentListAdapter.removeItem(item.getGroupId());
+                        SweetToast.success(StudentListActivity.this,"Student Removed.");
+                    }).setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss()).setCancelable(false).show();
+        }
+        return super.onContextItemSelected(item);
     }
 }
